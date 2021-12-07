@@ -43,7 +43,6 @@ namespace FileReader
             {
                 for (int x = 0; x < image.Width; x++)
                 {
-                    int bitPlane;
                     Color c = image.GetPixel(x, y);
                     int[] planes = new int[8];
                     int[] Gray = new int[8];

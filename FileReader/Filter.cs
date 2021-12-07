@@ -126,7 +126,6 @@ namespace FileReader
             return Medianimage;
             
         }
-
         public Bitmap CrossMedian(Bitmap image, int size)
         {
             Bitmap grayimage = image2Graylevel(image);
@@ -172,12 +171,11 @@ namespace FileReader
             return Medianimage;
 
         }
-
         public Bitmap PseudoMedian(Bitmap image, int size)
         {
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
-            Bitmap Medianimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
             if (size != 0)
             {
                 int[] xmask = new int[(size - 1) * 2 + 1];
@@ -217,19 +215,26 @@ namespace FileReader
                             MINMAX_y = Math.Min(MINMAX_y, Math.Max(ymask[j], ymask[j + 1]));
                         }
                         int PMED =(int)(0.5 * Math.Max(MAXMIN_x, MAXMIN_y) + 0.5 * Math.Min(MINMAX_x, MINMAX_y));
-                        Medianimage.SetPixel(x, y, Color.FromArgb(PMED, PMED, PMED));
+                        newimage.SetPixel(x, y, Color.FromArgb(PMED, PMED, PMED));
 
                     }
                 }
             }
-            return Medianimage;
+            return newimage;
 
         }
         public Bitmap Highpass(Bitmap image, int size)
         {
+            //{(-1-1-1),(-1 8 -1),(-1-1-1)}
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
-            Bitmap Medianimage = new Bitmap(grayimage.Width, grayimage.Height);
+            int[] kernel = new int[size * size];
+            for(int i = 0;i<kernel.Length;i++)
+            {
+                kernel[i] = -1;
+            }
+            kernel[size * size / 2] = kernel.Length - 1;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
             if (size != 0)
             {
                 int[] mask = new int[size * size];
@@ -250,25 +255,27 @@ namespace FileReader
                                 }
                             }
                         }
-                        double sum = 0;
-                        for(int i =0;i<mask.Length;i++)
+                        double d =0;
+                        for (int i = 0; i < mask.Length; i++)
                         {
-                            sum += mask[i];
+                            d += mask[i]*kernel[i];
                         }
-                        double d = (1 - (1 / mask.Length)* (mask[size * size / 2]/255)) * mask.Length;
-                        Medianimage.SetPixel(x, y, Color.FromArgb((int)d, (int)d, (int)d));
+                        if (d < 0) { d = 0; }
+                        else if (d > 255) { d = 255; }
+                        newimage.SetPixel(x, y, Color.FromArgb((int)d, (int)d, (int)d));
 
                     }
                 }
             }
-            return Medianimage;
+            return newimage;
 
         }
         public Bitmap Lowpass(Bitmap image, int size)
         {
+            //{(111),(111),(111)}
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
-            Bitmap Medianimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
             if (size != 0)
             {
                 int[] mask = new int[size * size];
@@ -295,13 +302,103 @@ namespace FileReader
                             sum += mask[i];
                         }
                         int g = sum / mask.Length;
-                        Medianimage.SetPixel(x, y, Color.FromArgb(g,g,g));
+                        newimage.SetPixel(x, y, Color.FromArgb(g,g,g));
 
                     }
                 }
             }
-            return Medianimage;
+            return newimage;
 
+        }
+
+        public Bitmap EdgeCrispening(Bitmap image, int size)
+        {
+            //取I(x,y)周圍size*size個點算平均值，I(x,y)減平均值得到一个差值。差值乘係數（也就是銳化的程度），加上自己的原始值
+            Bitmap grayimage = image2Graylevel(image);
+            pictureBox1.Image = grayimage;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
+            if (size != 0)
+            {
+                int[] mask = new int[size * size];
+                int tmp = size / 2;
+                int index = 0;
+                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                {
+                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    {
+                        for (int j = y - tmp; j <= y + tmp; j++)
+                        {
+                            for (int i = x - tmp; i <= x + tmp; i++)
+                            {
+                                if (index >= size * size) { index = 0; }
+                                else
+                                {
+                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                }
+                            }
+                        }
+                        int mean = 0;
+                        for(int i =0;i<mask.Length;i++)
+                        {
+                            mean += mask[i];
+                        }
+                        mean -= mask[mask.Length / 2];
+                        mean /= mask.Length;
+                        int g = (mean - mask[mask.Length / 2])*100 + mask[mask.Length / 2];
+                        if (g < 0) { g = 0; }
+                        else if (g > 255) { g = 255; }
+                        newimage.SetPixel(x, y, Color.FromArgb(g, g, g));
+
+                    }
+                }
+            }
+            return newimage;
+        }
+        public Bitmap HighBoost(Bitmap image, int size,double A)
+        {
+            //{(-1-1-1),(-1 9A-1 -1),(-1-1-1)}
+            Bitmap grayimage = image2Graylevel(image);
+            pictureBox1.Image = grayimage;
+            double[] kernel = new double[size * size];
+            for (int i = 0; i < kernel.Length; i++)
+            {
+                kernel[i] = -1;
+            }
+            kernel[size * size / 2] = kernel.Length*A - 1;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
+            if (size != 0)
+            {
+                int[] mask = new int[size * size];
+                int tmp = size / 2;
+                int index = 0;
+                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                {
+                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    {
+                        for (int j = y - tmp; j <= y + tmp; j++)
+                        {
+                            for (int i = x - tmp; i <= x + tmp; i++)
+                            {
+                                if (index >= size * size) { index = 0; }
+                                else
+                                {
+                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                }
+                            }
+                        }
+                        double d = 0;
+                        for (int i = 0; i < mask.Length; i++)
+                        {
+                            d += mask[i] * kernel[i];
+                        }
+                        if (d < 0) { d = 0; }
+                        else if (d > 255) { d = 255; }
+                        newimage.SetPixel(x, y, Color.FromArgb((int)d, (int)d, (int)d));
+
+                    }
+                }
+            }
+            return newimage;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -332,6 +429,31 @@ namespace FileReader
         private void button6_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Lowpass(image, Convert.ToInt32(textBox1.Text));
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = EdgeCrispening(image, Convert.ToInt32(textBox1.Text));
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = HighBoost(image, Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1]));
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
