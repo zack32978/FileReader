@@ -600,11 +600,6 @@ namespace FileReader
             }
             
         }
-        //========================SNR===============================================
-        public void getSNR() 
-        { 
-
-        }
         //========================histogram=========================================
         
         private void Histogram_Click(object sender, EventArgs e)

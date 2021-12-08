@@ -19,6 +19,46 @@ namespace FileReader
             pictureBox1.Image = Image;
             image = Image;
         }
+        //========================SNR===============================================
+        public double SNR(Bitmap imagemg, Bitmap noiseimage)
+        {
+            int r1,r2,g1,g2,b1,b2;
+            double sigma = 0, square = 0;
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    r1 = (int)image.GetPixel(x, y).R;
+                    g1 = (int)image.GetPixel(x, y).G;
+                    b1 = (int)image.GetPixel(x, y).B;
+                    r2 = (int)noiseimage.GetPixel(x, y).R;
+                    g2 = (int)noiseimage.GetPixel(x, y).R;
+                    b2 = (int)noiseimage.GetPixel(x, y).R;
+                    sigma += (b1 - b2) * (b1 - b2) + (g1 - g2) * (g1 - g2) +(r1 - r2) * (r1 - r2);
+                    square += b1 * b1 + g1 * g1 + r1 * r1;
+                }
+            }
+            return 10 * Math.Log10(square / sigma);
+        }
+        //=========================Gray=====================================
+        public Bitmap image2Graylevel(Bitmap image)
+        {
+            int Width = image.Width;
+            int Height = image.Height;
+            Bitmap Grayimage = new Bitmap(Width, Height);
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    int gray = ((image.GetPixel(x, y).R + image.GetPixel(x, y).G + image.GetPixel(x, y).B) / 3);
+                    Color color = Color.FromArgb(gray, gray, gray);
+                    Grayimage.SetPixel(x, y, color);
+                }
+            }
+            return Grayimage;
+        }
+        //=========================Filter===================================
         public Bitmap Outlier(Bitmap image,int size)
         {
             pictureBox1.Image = image;
@@ -29,9 +69,10 @@ namespace FileReader
                 Color[] mask = new Color[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < image.Height - size / 2; y++)
+                Color block = new Color();
+                for (int y = 0; y < image.Height; y++)
                 {
-                    for (int x = size / 2; x < image.Width - size / 2; x++)
+                    for (int x = 0; x < image.Width; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -40,7 +81,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = image.GetPixel(i, j);
+                                    if (i >= image.Width || i < 0 || j >= image.Height || j < 0) { mask[index++] = block; }
+                                    else { mask[index++] = image.GetPixel(i, j); }
                                 }
                             }
                         }
@@ -75,22 +117,6 @@ namespace FileReader
             }         
             return Outlierimage;
         }
-        public Bitmap image2Graylevel(Bitmap image)
-        {
-            int Width = image.Width;
-            int Height = image.Height;
-            Bitmap Grayimage = new Bitmap(Width, Height);
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    int gray = ((image.GetPixel(x, y).R + image.GetPixel(x, y).G + image.GetPixel(x, y).B) / 3);
-                    Color color = Color.FromArgb(gray, gray, gray);
-                    Grayimage.SetPixel(x, y, color);
-                }
-            }
-            return Grayimage;
-        }
         public Bitmap SquareMedian(Bitmap image,int size)
         {
             Bitmap grayimage =  image2Graylevel(image);
@@ -101,9 +127,9 @@ namespace FileReader
                 int[] mask = new int[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                for (int y = 0; y < grayimage.Height ; y++)
                 {
-                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    for (int x = size; x < grayimage.Width ; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -112,7 +138,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                    if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                    else { mask[index++] = grayimage.GetPixel(i, j).R;}
                                 }
                             }
                         }
@@ -135,28 +162,34 @@ namespace FileReader
             {
                 int[] mask = new int[(size-1)*4+1];
                 int index = 0;
-                for (int y = (size -1); y < (grayimage.Height - size -1); y++)
+                for (int y = 0 ; y < grayimage.Height; y++)
                 {
-                    for (int x = (size -1); x < (grayimage.Width - size -1); x++)
+                    for (int x = 0 ; x < grayimage.Width; x++)
                     {
                         if (index >= (size - 1) * 4 ) { index = 0; }
                         else
                         {
                             for (int i = (x - (size - 1)); i < x; i++)
                             {
-                                mask[index++] = grayimage.GetPixel(i, y).R;
+                                if (i >= grayimage.Width || i < 0 ) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(i, y).R;}
+                               
                             }
                             for (int i = x; i < (x + size - 1); i++)
                             {
-                                mask[index++] = grayimage.GetPixel(i, y).R;
+                                if (i >= grayimage.Width || i < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(i, y).R; }
                             }
                             for (int i = (y - (size - 1)); i < y; i++)
                             {
-                                mask[index++] = grayimage.GetPixel(x, i).R;
+                                if (i >= grayimage.Height || i < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(x, i).R; }
+                               
                             }
                             for (int i = y; i < (y + size - 1); i++)
                             {
-                                mask[index++] = grayimage.GetPixel(x, i).R;
+                                if (i >= grayimage.Height || i < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(x, i).R; }
                             }
                             mask[index] = grayimage.GetPixel(x, y).R; // n
                         }
@@ -181,9 +214,9 @@ namespace FileReader
                 int[] xmask = new int[(size - 1) * 2 + 1];
                 int[] ymask = new int[(size - 1) * 2 + 1];
                 int xindex = 0, yindex = 0;
-                for (int y = (size - 1); y < (grayimage.Height - size - 1); y++)
+                for (int y = 0; y < grayimage.Height; y++)
                 {
-                    for (int x = (size - 1); x < (grayimage.Width - size - 1); x++)
+                    for (int x = 0; x < grayimage.Width; x++)
                     {
                         if((yindex >= (size - 1) * 2)&& (xindex >= (size - 1) * 2)) { yindex = 0; xindex = 0; }
                         else
@@ -192,12 +225,15 @@ namespace FileReader
                             //==================橫=====================
                             for (int i = (x - (size - 1)); i < (x + size); i++)
                             {
-                                xmask[xindex++] = grayimage.GetPixel(i, y).R;
+                                if (i >= grayimage.Width || i < 0 ) { xmask[xindex++] = 0; }
+                                else { xmask[xindex++] = grayimage.GetPixel(i, y).R; }
+                               
                             }
                             //==================直======================
                             for (int i = (y - (size - 1)); i < (y + size); i++)
                             {
-                                ymask[yindex++] = grayimage.GetPixel(x, i).R;
+                                if (i >= grayimage.Width || i < 0 ) { ymask[yindex++] = 0; }
+                                else { ymask[yindex++] = grayimage.GetPixel(x, i).R; }
                             }
                         }
                         //==================MAXMIN========================
@@ -240,9 +276,9 @@ namespace FileReader
                 int[] mask = new int[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                for (int y = 0; y < grayimage.Height; y++)
                 {
-                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    for (int x = 0; x < grayimage.Width ; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -251,7 +287,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                    if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                    else { mask[index++] = grayimage.GetPixel(i, j).R; }
                                 }
                             }
                         }
@@ -260,6 +297,7 @@ namespace FileReader
                         {
                             d += mask[i]*kernel[i];
                         }
+                        d /= mask.Length;
                         if (d < 0) { d = 0; }
                         else if (d > 255) { d = 255; }
                         newimage.SetPixel(x, y, Color.FromArgb((int)d, (int)d, (int)d));
@@ -281,9 +319,9 @@ namespace FileReader
                 int[] mask = new int[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                for (int y = 0; y < grayimage.Height; y++)
                 {
-                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    for (int x = 0; x < grayimage.Width ; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -292,7 +330,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                    if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                    else { mask[index++] = grayimage.GetPixel(i, j).R; }
                                 }
                             }
                         }
@@ -310,7 +349,6 @@ namespace FileReader
             return newimage;
 
         }
-
         public Bitmap EdgeCrispening(Bitmap image, int size)
         {
             //取I(x,y)周圍size*size個點算平均值，I(x,y)減平均值得到一个差值。差值乘係數（也就是銳化的程度），加上自己的原始值
@@ -322,9 +360,9 @@ namespace FileReader
                 int[] mask = new int[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                for (int y = 0; y < grayimage.Height; y++)
                 {
-                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    for (int x = 0; x < grayimage.Width; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -333,7 +371,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                    if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                    else { mask[index++] = grayimage.GetPixel(i, j).R; }
                                 }
                             }
                         }
@@ -371,9 +410,9 @@ namespace FileReader
                 int[] mask = new int[size * size];
                 int tmp = size / 2;
                 int index = 0;
-                for (int y = size / 2; y < grayimage.Height - size / 2; y++)
+                for (int y = 0; y < grayimage.Height ; y++)
                 {
-                    for (int x = size / 2; x < grayimage.Width - size / 2; x++)
+                    for (int x = 0; x < grayimage.Width ; x++)
                     {
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
@@ -382,7 +421,8 @@ namespace FileReader
                                 if (index >= size * size) { index = 0; }
                                 else
                                 {
-                                    mask[index++] = grayimage.GetPixel(i, j).R;
+                                    if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                    else { mask[index++] = grayimage.GetPixel(i, j).R; }
                                 }
                             }
                         }
@@ -391,6 +431,7 @@ namespace FileReader
                         {
                             d += mask[i] * kernel[i];
                         }
+                        d /= mask.Length;
                         if (d < 0) { d = 0; }
                         else if (d > 255) { d = 255; }
                         newimage.SetPixel(x, y, Color.FromArgb((int)d, (int)d, (int)d));
@@ -400,60 +441,192 @@ namespace FileReader
             }
             return newimage;
         }
+        public Bitmap Roberts(Bitmap image) 
+        {
+            Bitmap grayimage = image2Graylevel(image);
+            pictureBox1.Image = grayimage;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
+            int[] mask = new int[4];
+            int index = 0;
+            int tmp = 1;
+            for (int y = 0; y < grayimage.Height; y++)
+            {
+                for (int x = 0; x < grayimage.Width; x++)
+                {
+                    for (int j = y - tmp; j < y + tmp; j++)
+                    {
+                        for (int i = x - tmp; i < x + tmp; i++)
+                        {
+                            if (index >= 4) { index = 0; }
+                            else
+                            {
+                                if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(i, j).R; }
+                            }
+                        }
+                    }
+                    int d = (int)Math.Sqrt((mask[0] - mask[3]) * (mask[0] - mask[3]) + (mask[1] - mask[2]) * (mask[1] - mask[2]));
+                    if (d < 0) { d = 0; }
+                    else if (d > 255) { d = 255; }
+                    newimage.SetPixel(x, y, Color.FromArgb(d,d,d));
+                }
+            }
+            return newimage;
+        }
+        public Bitmap Sobel(Bitmap image)
+        {
+            Bitmap grayimage = image2Graylevel(image);
+            pictureBox1.Image = grayimage;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap xnewimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap ynewimage = new Bitmap(grayimage.Width, grayimage.Height);
+            int[] mask = new int[9];
+            int tmp = 1;
+            int index = 0;
+            for (int y = 0; y < grayimage.Height; y++)
+            {
+                for (int x = 0; x < grayimage.Width; x++)
+                {
+                    for (int j = y - tmp; j <= y + tmp; j++)
+                    {
+                        for (int i = x - tmp; i <= x + tmp; i++)
+                        {
+                            if (index >= 9) { index = 0; }
+                            else
+                            {
+                                if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(i, j).R; }
+                            }
+                        }
+                    }
+                    int dy = (int)Math.Abs( (-mask[0] - 2 * mask[3] - mask[6]) + (mask[2] + 2 * mask[5] + mask[8]));
+                    int dx = (int)Math.Abs( (mask[0] + 2 * mask[1] + mask[2]) + (-mask[6] - 2 * mask[7] - mask[8]));
+                    int d = dx + dy;
+                    if (dx < 0) { dx = 0; }
+                    else if (dx > 255) { dx = 255; }
+                    if (dy < 0) { dy = 0; }
+                    else if (dy > 255) { dy = 255; }
+                    if (d < 0) { d = 0; }
+                    else if (d > 255) { d = 255; }
+                    
+                    xnewimage.SetPixel(x, y, Color.FromArgb(dx, dx, dx));
+                    ynewimage.SetPixel(x, y, Color.FromArgb(dy, dy, dy));
+                    newimage.SetPixel(x, y, Color.FromArgb(d, d, d));
+                }
+            }
+            pictureBox3.Image = xnewimage;
+            pictureBox4.Image = ynewimage;
+            return newimage;
+        }
+        public Bitmap Prewitt(Bitmap image)
+        {
+            Bitmap grayimage = image2Graylevel(image);
+            pictureBox1.Image = grayimage;
+            Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap xnewimage = new Bitmap(grayimage.Width, grayimage.Height);
+            Bitmap ynewimage = new Bitmap(grayimage.Width, grayimage.Height);
+            int[] mask = new int[9];
+            int tmp = 1;
+            int index = 0;
+            for (int y = 0; y < grayimage.Height; y++)
+            {
+                for (int x = 0; x < grayimage.Width; x++)
+                {
+                    for (int j = y - tmp; j <= y + tmp; j++)
+                    {
+                        for (int i = x - tmp; i <= x + tmp; i++)
+                        {
+                            if (index >= 9) { index = 0; }
+                            else
+                            {
+                                if (i >= grayimage.Width || i < 0 || j >= grayimage.Height || j < 0) { mask[index++] = 0; }
+                                else { mask[index++] = grayimage.GetPixel(i, j).R; }
+                            }
+                        }
+                    }
+                    int dy = (int)Math.Abs((-mask[0] - mask[3] - mask[6]) + (mask[2] + mask[5] + mask[8]));
+                    int dx = (int)Math.Abs((-mask[0] - mask[1] - mask[2]) + (mask[6] + mask[7] + mask[8]));
+                    int d = dx + dy;
+                    if (dx < 0) { dx = 0; }
+                    else if (dx > 255) { dx = 255; }
+                    if (dy < 0) { dy = 0; }
+                    else if (dy > 255) { dy = 255; }
+                    if (d < 0) { d = 0; }
+                    else if (d > 255) { d = 255; }
+
+                    xnewimage.SetPixel(x, y, Color.FromArgb(dx, dx, dx));
+                    ynewimage.SetPixel(x, y, Color.FromArgb(dy, dy, dy));
+                    newimage.SetPixel(x, y, Color.FromArgb(d, d, d));
+                }
+            }
+            pictureBox3.Image = xnewimage;
+            pictureBox4.Image = ynewimage;
+            return newimage;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Outlier(image, Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image, Outlier(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = SquareMedian(image,Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), SquareMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = CrossMedian(image, Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), CrossMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (textBox1.Text == "1" || textBox1.Text == "0") { pictureBox2.Image = image2Graylevel(image); }
             else { pictureBox2.Image = PseudoMedian(image, Convert.ToInt32(textBox1.Text)); }
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), PseudoMedian(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Highpass(image, Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Highpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Lowpass(image, Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Lowpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = EdgeCrispening(image, Convert.ToInt32(textBox1.Text));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), EdgeCrispening(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = HighBoost(image, Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1]));
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), HighBoost(image,Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1])))) + " dB";
         }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button9_Click(object sender, EventArgs e)
         {
-
+            pictureBox2.Image = Roberts(image);
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Roberts(image))) + " dB";
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-
+            pictureBox2.Image = Sobel(image);
+            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Sobel(image))) + " dB";
+        }
+        private void button11_Click(object sender, EventArgs e)
+        {
+            pictureBox2.Image = Prewitt(image);
+            richTextBox1.Text ="SNR:"+Convert.ToString(SNR(image2Graylevel(image), Prewitt(image)))+" dB";
         }
     }
 }
