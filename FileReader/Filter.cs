@@ -628,5 +628,20 @@ namespace FileReader
             pictureBox2.Image = Prewitt(image);
             richTextBox1.Text ="SNR:"+Convert.ToString(SNR(image2Graylevel(image), Prewitt(image)))+" dB";
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Filter_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

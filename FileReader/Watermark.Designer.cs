@@ -57,9 +57,9 @@ namespace FileReader
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(297, 81);
+            this.pictureBox3.Location = new System.Drawing.Point(243, 25);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(272, 258);
+            this.pictureBox3.Size = new System.Drawing.Size(394, 384);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 2;
             this.pictureBox3.TabStop = false;
@@ -68,7 +68,7 @@ namespace FileReader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 436);
+            this.ClientSize = new System.Drawing.Size(659, 430);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);

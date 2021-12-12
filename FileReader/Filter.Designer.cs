@@ -57,7 +57,7 @@ namespace FileReader
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(154, 57);
+            this.pictureBox1.Location = new System.Drawing.Point(199, 56);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(299, 274);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -66,7 +66,7 @@ namespace FileReader
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(469, 57);
+            this.pictureBox2.Location = new System.Drawing.Point(523, 57);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(299, 274);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -75,7 +75,7 @@ namespace FileReader
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 57);
+            this.button1.Location = new System.Drawing.Point(12, 104);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(53, 22);
             this.button1.TabIndex = 4;
@@ -85,7 +85,7 @@ namespace FileReader
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 85);
+            this.button2.Location = new System.Drawing.Point(12, 132);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(53, 36);
             this.button2.TabIndex = 5;
@@ -95,7 +95,7 @@ namespace FileReader
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 57);
+            this.textBox1.Location = new System.Drawing.Point(71, 76);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(53, 22);
             this.textBox1.TabIndex = 6;
@@ -103,7 +103,7 @@ namespace FileReader
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(71, 85);
+            this.button3.Location = new System.Drawing.Point(71, 132);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(53, 36);
             this.button3.TabIndex = 7;
@@ -113,7 +113,7 @@ namespace FileReader
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(12, 127);
+            this.button4.Location = new System.Drawing.Point(130, 132);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(53, 36);
             this.button4.TabIndex = 8;
@@ -123,9 +123,9 @@ namespace FileReader
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(12, 169);
+            this.button5.Location = new System.Drawing.Point(130, 104);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(53, 23);
+            this.button5.Size = new System.Drawing.Size(53, 22);
             this.button5.TabIndex = 9;
             this.button5.Text = "Highpass";
             this.button5.UseVisualStyleBackColor = true;
@@ -133,9 +133,9 @@ namespace FileReader
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(71, 169);
+            this.button6.Location = new System.Drawing.Point(71, 104);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(53, 23);
+            this.button6.Size = new System.Drawing.Size(53, 22);
             this.button6.TabIndex = 10;
             this.button6.Text = "Lowpass";
             this.button6.UseVisualStyleBackColor = true;
@@ -143,9 +143,9 @@ namespace FileReader
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(71, 127);
+            this.button7.Location = new System.Drawing.Point(12, 62);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(53, 33);
+            this.button7.Size = new System.Drawing.Size(53, 36);
             this.button7.TabIndex = 11;
             this.button7.Text = "Edge\r\nCrispening";
             this.button7.UseVisualStyleBackColor = true;
@@ -153,26 +153,26 @@ namespace FileReader
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(10, 236);
+            this.button8.Location = new System.Drawing.Point(12, 186);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(53, 23);
+            this.button8.Size = new System.Drawing.Size(53, 36);
             this.button8.TabIndex = 12;
-            this.button8.Text = "High-boost\r\n";
+            this.button8.Text = "High\r\nboost\r\n";
             this.button8.UseVisualStyleBackColor = true;
             this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(71, 236);
+            this.textBox2.Location = new System.Drawing.Point(71, 200);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(54, 22);
+            this.textBox2.Size = new System.Drawing.Size(53, 22);
             this.textBox2.TabIndex = 13;
             this.textBox2.Text = "3 1.1";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(69, 42);
+            this.label1.Location = new System.Drawing.Point(69, 61);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 12);
             this.label1.TabIndex = 14;
@@ -181,15 +181,16 @@ namespace FileReader
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(69, 216);
+            this.label2.Location = new System.Drawing.Point(69, 185);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(70, 12);
             this.label2.TabIndex = 15;
             this.label2.Text = "Kernel size, A";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(10, 279);
+            this.button9.Location = new System.Drawing.Point(12, 253);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(53, 23);
             this.button9.TabIndex = 16;
@@ -199,7 +200,7 @@ namespace FileReader
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(10, 308);
+            this.button10.Location = new System.Drawing.Point(71, 253);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(53, 23);
             this.button10.TabIndex = 17;
@@ -209,7 +210,7 @@ namespace FileReader
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(10, 337);
+            this.button11.Location = new System.Drawing.Point(130, 253);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(53, 23);
             this.button11.TabIndex = 18;
@@ -222,15 +223,16 @@ namespace FileReader
             this.richTextBox1.BackColor = System.Drawing.SystemColors.Menu;
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.richTextBox1.Location = new System.Drawing.Point(167, 332);
+            this.richTextBox1.Location = new System.Drawing.Point(199, 336);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(614, 28);
             this.richTextBox1.TabIndex = 19;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(154, 380);
+            this.pictureBox3.Location = new System.Drawing.Point(199, 371);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(299, 274);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -239,7 +241,7 @@ namespace FileReader
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Location = new System.Drawing.Point(469, 380);
+            this.pictureBox4.Location = new System.Drawing.Point(523, 371);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(299, 274);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -250,7 +252,7 @@ namespace FileReader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(793, 372);
+            this.ClientSize = new System.Drawing.Size(849, 366);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.richTextBox1);
@@ -273,6 +275,7 @@ namespace FileReader
             this.Controls.Add(this.pictureBox1);
             this.Name = "Filter";
             this.Text = "Filter";
+            this.Load += new System.EventHandler(this.Filter_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
