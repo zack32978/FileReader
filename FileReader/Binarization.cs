@@ -17,10 +17,9 @@ namespace FileReader
         {
             InitializeComponent();
             image = Image;
-            int threshold = Otsu(image);
+            
             pictureBox1.Image = image;
-            pictureBox3.Image = binarization(image, threshold);
-            label1.Text = "Thresthold:" + Convert.ToString(threshold);
+            
         }
         public int Otsu(Bitmap image) 
         {
@@ -66,8 +65,6 @@ namespace FileReader
                     threshold = t;
                 }
             }
-
-              
             return threshold;
         }
         public int[] GrayHistogram(Bitmap image)
@@ -87,7 +84,6 @@ namespace FileReader
         
         public Bitmap binarization(Bitmap image,int value)
         {
-            
             int pixel;
             Bitmap newimage =  new Bitmap(image.Width,image.Height);
             for (int y = 0; y < image.Height; y++)
@@ -111,6 +107,18 @@ namespace FileReader
         private void button1_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = binarization(image, Convert.ToInt32(textBox1.Text));
+        }
+
+        private void Binarization_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int threshold = Otsu(image);
+            pictureBox3.Image = binarization(image, threshold);
+            label1.Text = "Thresthold:" + Convert.ToString(threshold);
         }
     }
 }

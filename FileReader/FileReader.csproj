@@ -78,6 +78,48 @@
     <Compile Include="Filter.Designer.cs">
       <DependentUpon>Filter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cut.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cut.Designer.cs">
+      <DependentUpon>Cut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BouncingBalls.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BouncingBalls.Designer.cs">
+      <DependentUpon>BouncingBalls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connected.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connected.Designer.cs">
+      <DependentUpon>Connected.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Equalization.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Equalization.Designer.cs">
+      <DependentUpon>Equalization.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Specification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Specification.Designer.cs">
+      <DependentUpon>Specification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Huffman.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Huffman.Designer.cs">
+      <DependentUpon>Huffman.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mpeg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mpeg.Designer.cs">
+      <DependentUpon>Mpeg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Watermark.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +171,15 @@
     <Compile Include="PCXDC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BouncingBalls.resx">
+      <DependentUpon>BouncingBalls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connected.resx">
+      <DependentUpon>Connected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Equalization.resx">
+      <DependentUpon>Equalization.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,6 +194,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Filter.resx">
       <DependentUpon>Filter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cut.resx">
+      <DependentUpon>Cut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Huffman.resx">
+      <DependentUpon>Huffman.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mpeg.resx">
+      <DependentUpon>Mpeg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Specification.resx">
+      <DependentUpon>Specification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Watermark.resx">
       <DependentUpon>Watermark.cs</DependentUpon>
@@ -199,6 +262,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="load.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Forward-48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -25,13 +25,13 @@ namespace FileReader
             int r1,r2,g1,g2,b1,b2;
             double sigma = 0, square = 0;
 
-            for (int y = 0; y < image.Height; y++)
+            for (int y = 0; y < imagemg.Height; y++)
             {
-                for (int x = 0; x < image.Width; x++)
+                for (int x = 0; x < imagemg.Width; x++)
                 {
-                    r1 = (int)image.GetPixel(x, y).R;
-                    g1 = (int)image.GetPixel(x, y).G;
-                    b1 = (int)image.GetPixel(x, y).B;
+                    r1 = (int)imagemg.GetPixel(x, y).R;
+                    g1 = (int)imagemg.GetPixel(x, y).G;
+                    b1 = (int)imagemg.GetPixel(x, y).B;
                     r2 = (int)noiseimage.GetPixel(x, y).R;
                     g2 = (int)noiseimage.GetPixel(x, y).R;
                     b2 = (int)noiseimage.GetPixel(x, y).R;
@@ -59,7 +59,7 @@ namespace FileReader
             return Grayimage;
         }
         //=========================Filter===================================
-        public Bitmap Outlier(Bitmap image,int size)
+        public Bitmap Outlier(Bitmap image,int size)//取nxn的遮罩，取中間值外的平均，若均值與中間pixel值差大於閥值則取代pixel
         {
             pictureBox1.Image = image;
             Bitmap Outlierimage = new Bitmap(image.Width, image.Height);
@@ -74,6 +74,7 @@ namespace FileReader
                 {
                     for (int x = 0; x < image.Width; x++)
                     {
+                        #region 取nxn的pixel值
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
                             for (int i = x - tmp; i <= x + tmp; i++)
@@ -86,9 +87,12 @@ namespace FileReader
                                 }
                             }
                         }
+                        #endregion
+                        //中間pixel
                         int pointr = mask[size * size / 2].R;
                         int pointg = mask[size * size / 2].G;
                         int pointb = mask[size * size / 2].B;
+                        //取除了中間值外平均
                         int dr = 0, dg = 0, db = 0;
                         for(int i =0;i<mask.Length;i++)
                         {
@@ -99,6 +103,7 @@ namespace FileReader
                         dr = (dr - pointr) / (mask.Length - 1);
                         dg = (dg - pointg) / (mask.Length - 1);
                         db = (db - pointb) / (mask.Length - 1);
+                        //判斷閥值，若|中間-平均|>閥值則取代
                         if (Math.Abs(pointr - dr) > 50)
                         {
                             pointr = dr;
@@ -117,7 +122,8 @@ namespace FileReader
             }         
             return Outlierimage;
         }
-        public Bitmap SquareMedian(Bitmap image,int size)
+        #region Median: sort mask 取最中间那一个pixel值用中值替代
+        public Bitmap SquareMedian(Bitmap image,int size)//方形
         {
             Bitmap grayimage =  image2Graylevel(image);
             pictureBox1.Image = grayimage;
@@ -131,6 +137,7 @@ namespace FileReader
                 {
                     for (int x = size; x < grayimage.Width ; x++)
                     {
+                        #region 取nxn的pixel值
                         for (int j = y - tmp; j <= y + tmp; j++)
                         {
                             for (int i = x - tmp; i <= x + tmp; i++)
@@ -143,6 +150,7 @@ namespace FileReader
                                 }
                             }
                         }
+                        #endregion
                         Array.Sort(mask);
                         int median = mask[size * size / 2];
                         Medianimage.SetPixel(x, y, Color.FromArgb(median, median, median));
@@ -153,7 +161,7 @@ namespace FileReader
             return Medianimage;
             
         }
-        public Bitmap CrossMedian(Bitmap image, int size)
+        public Bitmap CrossMedian(Bitmap image, int size)//+型
         {
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
@@ -166,6 +174,7 @@ namespace FileReader
                 {
                     for (int x = 0 ; x < grayimage.Width; x++)
                     {
+                        #region 取+型的pixel值
                         if (index >= (size - 1) * 4 ) { index = 0; }
                         else
                         {
@@ -193,6 +202,7 @@ namespace FileReader
                             }
                             mask[index] = grayimage.GetPixel(x, y).R; // n
                         }
+                        #endregion
                         Array.Sort(mask);
 
                         int median = mask[mask.Length/2];
@@ -202,9 +212,9 @@ namespace FileReader
                 }
             }
             return Medianimage;
-
         }
-        public Bitmap PseudoMedian(Bitmap image, int size)
+
+        public Bitmap PseudoMedian(Bitmap image, int size)//分別取直的跟橫的mask
         {
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
@@ -259,6 +269,7 @@ namespace FileReader
             return newimage;
 
         }
+        #endregion
         public Bitmap Highpass(Bitmap image, int size)
         {
             //{(-1-1-1),(-1 8 -1),(-1-1-1)}
@@ -443,6 +454,8 @@ namespace FileReader
         }
         public Bitmap Roberts(Bitmap image) 
         {
+            //| 1  0 |    | 0  1 |
+            //| 0 -1 |  & |-1  0 |
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
             Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
@@ -465,6 +478,7 @@ namespace FileReader
                             }
                         }
                     }
+
                     int d = (int)Math.Sqrt((mask[0] - mask[3]) * (mask[0] - mask[3]) + (mask[1] - mask[2]) * (mask[1] - mask[2]));
                     if (d < 0) { d = 0; }
                     else if (d > 255) { d = 255; }
@@ -474,7 +488,10 @@ namespace FileReader
             return newimage;
         }
         public Bitmap Sobel(Bitmap image)
-        {
+        {  
+            //Gx:[1 0 -1]  Gy:[ 1  2  1]
+            //   [2 0 -2]     [ 0  0  0]
+            //   [1 0 -1]     [-1 -2 -1]
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
             Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
@@ -520,6 +537,9 @@ namespace FileReader
         }
         public Bitmap Prewitt(Bitmap image)
         {
+            //Gx:[1 0 -1]  Gy:[ 1  1  1]
+            //   [1 0 -1]     [ 0  0  0]
+            //   [1 0 -1]     [-1 -1 -1]
             Bitmap grayimage = image2Graylevel(image);
             pictureBox1.Image = grayimage;
             Bitmap newimage = new Bitmap(grayimage.Width, grayimage.Height);
@@ -563,70 +583,70 @@ namespace FileReader
             pictureBox4.Image = ynewimage;
             return newimage;
         }
-
+        #region button
         private void button1_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Outlier(image, Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image, Outlier(image, Convert.ToInt32(textBox1.Text))))+" dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image, Outlier(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = SquareMedian(image,Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), SquareMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), SquareMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = CrossMedian(image, Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), CrossMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), CrossMedian(image, Convert.ToInt32(textBox1.Text))))+" dB";
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             if (textBox1.Text == "1" || textBox1.Text == "0") { pictureBox2.Image = image2Graylevel(image); }
             else { pictureBox2.Image = PseudoMedian(image, Convert.ToInt32(textBox1.Text)); }
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), PseudoMedian(image, Convert.ToInt32(textBox1.Text)))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), PseudoMedian(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Highpass(image, Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Highpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), Highpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Lowpass(image, Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Lowpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), Lowpass(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = EdgeCrispening(image, Convert.ToInt32(textBox1.Text));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), EdgeCrispening(image, Convert.ToInt32(textBox1.Text)))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), EdgeCrispening(image, Convert.ToInt32(textBox1.Text)))) + " dB";
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = HighBoost(image, Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1]));
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), HighBoost(image,Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1])))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), HighBoost(image,Convert.ToInt32(textBox2.Text.Split(' ')[0]), Convert.ToDouble(textBox2.Text.Split(' ')[1])))) + " dB";
         }
         private void button9_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Roberts(image);
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Roberts(image))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), Roberts(image))) + " dB";
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Sobel(image);
-            richTextBox1.Text = "SNR:" + Convert.ToString(SNR(image2Graylevel(image), Sobel(image))) + " dB";
+            richTextBox1.Text = "SNR: " + Convert.ToString(SNR(image2Graylevel(image), Sobel(image))) + " dB";
         }
         private void button11_Click(object sender, EventArgs e)
         {
             pictureBox2.Image = Prewitt(image);
-            richTextBox1.Text ="SNR:"+Convert.ToString(SNR(image2Graylevel(image), Prewitt(image)))+" dB";
+            richTextBox1.Text ="SNR: "+Convert.ToString(SNR(image2Graylevel(image), Prewitt(image)))+" dB";
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -643,5 +663,6 @@ namespace FileReader
         {
 
         }
+        #endregion
     }
 }

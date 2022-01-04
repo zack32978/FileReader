@@ -99,7 +99,7 @@ namespace FileReader
                     {
                         planes[7] = 1;
                     }
-                    //gray
+                    //gray code 避免進位 每次只有一個bit變化
                     Gray[7] = planes[7];
                     if (Gray[7] != 0)
                     {
@@ -284,13 +284,33 @@ namespace FileReader
             }
             return Grayimage;
         }
-        private void button7_Click(object sender, EventArgs e)
+
+        public double SNR(Bitmap imagemg, Bitmap noiseimage)
         {
-            Bitmap image;
-            if (filename.Contains(".pcx")) { image = PCX_decode.decode_image; }
-            else { image = BMP_decode.decode_image; }
-            pictureBox5.Image = image2Graylevel(image);
+            int r1, r2, g1, g2, b1, b2;
+            double sigma = 0, square = 0;
+
+            for (int y = 0; y < imagemg.Height; y++)
+            {
+                for (int x = 0; x < imagemg.Width; x++)
+                {
+                    r1 = (int)imagemg.GetPixel(x, y).R;
+                    g1 = (int)imagemg.GetPixel(x, y).G;
+                    b1 = (int)imagemg.GetPixel(x, y).B;
+                    r2 = (int)noiseimage.GetPixel(x, y).R;
+                    g2 = (int)noiseimage.GetPixel(x, y).R;
+                    b2 = (int)noiseimage.GetPixel(x, y).R;
+                    sigma += (b1 - b2) * (b1 - b2) + (g1 - g2) * (g1 - g2) + (r1 - r2) * (r1 - r2);
+                    square += b1 * b1 + g1 * g1 + r1 * r1;
+                }
+            }
+            return 10 * Math.Log10(square / sigma);
         }
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
@@ -302,7 +322,7 @@ namespace FileReader
                 PCX_header.readheader(imagefile);
                 PCX_decode.decoPixel(imagefile);
                 image2 = PCX_decode.decode_image;
-                richTextBox1.Text = "Open the file: " + filename;
+              
             }
             else if (filename.Contains(".bmp"))
             {
@@ -311,7 +331,7 @@ namespace FileReader
                 BReadPalette BMP_palette = new BReadPalette();
                 BMP_palette.readpalette(imagefile);
                 image2 = BMP_decode.decode_image;
-                richTextBox1.Text = "Open the file: " + filename;
+                
             }
             width2 = image2.Width;
             height2 = image2.Height;
@@ -323,11 +343,10 @@ namespace FileReader
 
             if (height1 != height2) { Hzoom = height1 / height2; }
             else { Hzoom = 1.0; }
-
             image2 = ImageResize(image2, Wzoom, Hzoom);
-
-            image3 = watermark(image1, image2, Convert.ToInt32(textBox1.Text));
-            Watermark w = new Watermark(image1, image2, image3);
+            image3 = watermark(image1, image2Graylevel(image2), Convert.ToInt32(textBox1.Text));
+            double snr = SNR(image1,image3);
+            Watermark w = new Watermark(image3,snr);
             w.Show();
         }
         public Bitmap watermark(Bitmap image1,Bitmap image2,int plane)
@@ -337,22 +356,66 @@ namespace FileReader
             {
                 for (int x = 0; x < image1.Width; x++)
                 {
-                    int bitPlane;
-                    Color c = image1.GetPixel(x, y);
-                    Color RGB = image2.GetPixel(x, y);
-                    int[] newRGB = new int[3];
-                    for (int i = 0; i < 3; i++) 
+                    int img1bitPlane,img2bitplane;
+                    Color c1 = image1.GetPixel(x, y);
+                    Color c2= image2.GetPixel(x, y);
+                    int[] planes = new int[8];
+                    for (int k = 0; k < 8; k++)
                     {
-                        newRGB[i] = c.R;
+                        planes[k] = c1.R;
                     }
-                    bitPlane = c.R & (2^plane);
-                    if (bitPlane == (2 ^ plane))
+                    if (plane == 0) 
                     {
-                        newRGB[0] = RGB.R;
-                        newRGB[1] = RGB.G;
-                        newRGB[2] = RGB.B;
+                        img1bitPlane = c1.R & 0x01;
+                        img2bitplane = c2.R & 0x01;
+                        planes[0] = planes[0] - img1bitPlane + img2bitplane;
                     }
-                    image3.SetPixel(x, y, Color.FromArgb(newRGB[0], newRGB[1], newRGB[2]));
+                    else if (plane == 1) 
+                    {
+                        img1bitPlane = c1.R & 0x02;
+                        img2bitplane = c2.R & 0x02;
+                        planes[1] = planes[1] -img1bitPlane+ img2bitplane;
+
+                    }
+                    else if (plane == 2) 
+                    {
+                        img1bitPlane = c1.R & 0x04;
+                        img2bitplane = c2.R & 0x04;
+                        planes[2] = planes[2] - img1bitPlane + img2bitplane;
+                    }
+                    else if (plane == 3) 
+                    {
+                        img1bitPlane = c1.R & 0x08;
+                        img2bitplane = c2.R & 0x08;
+                        planes[3] = planes[3] - img1bitPlane + img2bitplane;
+                    }
+                    else if (plane == 4) 
+                    {
+                        img1bitPlane = c1.R & 0x10;
+                        img2bitplane = c2.R & 0x10;
+                        planes[4] = planes[4] - img1bitPlane + img2bitplane;
+                    }
+                    else if (plane == 5) 
+                    { 
+                        img1bitPlane = c1.R & 0x20;
+                        img2bitplane = c2.R & 0x20;
+                        planes[5] = planes[5] - img1bitPlane + img2bitplane;
+                    }
+                    else if (plane == 6) 
+                    { 
+                        img1bitPlane = c1.R & 0x40;
+                        img2bitplane = c2.R & 0x40;
+                        planes[6] = planes[6] - img1bitPlane + img2bitplane;
+                    }
+                    else if (plane == 7)
+                    { 
+                        img1bitPlane = c1.R & 0x80;
+                        img2bitplane = c2.R & 0x80;
+                        planes[7] = planes[7] - img1bitPlane + img2bitplane;
+                    }
+                    
+                    image3.SetPixel(x, y, Color.FromArgb(planes[plane], planes[plane], planes[plane]));
+                    
                 }
             }
             return image3;

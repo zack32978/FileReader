@@ -42,6 +42,7 @@ namespace FileReader
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -50,7 +51,7 @@ namespace FileReader
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 68);
+            this.pictureBox1.Location = new System.Drawing.Point(16, 110);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(214, 187);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -60,7 +61,7 @@ namespace FileReader
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(356, 66);
+            this.pictureBox2.Location = new System.Drawing.Point(356, 110);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(214, 187);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -73,7 +74,7 @@ namespace FileReader
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(12, 259);
+            this.chart1.Location = new System.Drawing.Point(12, 303);
             this.chart1.Name = "chart1";
             series1.ChartArea = "ChartArea1";
             series1.Color = System.Drawing.Color.Gray;
@@ -90,12 +91,12 @@ namespace FileReader
             this.chart2.ChartAreas.Add(chartArea2);
             legend2.Name = "Legend1";
             this.chart2.Legends.Add(legend2);
-            this.chart2.Location = new System.Drawing.Point(356, 259);
+            this.chart2.Location = new System.Drawing.Point(356, 303);
             this.chart2.Name = "chart2";
             series2.ChartArea = "ChartArea1";
             series2.Color = System.Drawing.Color.DarkGray;
             series2.Legend = "Legend1";
-            series2.Name = "Contrast";
+            series2.Name = "Streching";
             this.chart2.Series.Add(series2);
             this.chart2.Size = new System.Drawing.Size(304, 192);
             this.chart2.TabIndex = 3;
@@ -103,7 +104,7 @@ namespace FileReader
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 20);
+            this.button1.Location = new System.Drawing.Point(12, 28);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 42);
             this.button1.TabIndex = 4;
@@ -113,23 +114,34 @@ namespace FileReader
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(88, 20);
+            this.textBox1.Location = new System.Drawing.Point(88, 28);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(74, 22);
             this.textBox1.TabIndex = 5;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(88, 40);
+            this.textBox2.Location = new System.Drawing.Point(88, 48);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(74, 22);
             this.textBox2.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("新細明體", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Location = new System.Drawing.Point(12, 88);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 19);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "原圖";
             // 
             // Contrast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(672, 463);
+            this.ClientSize = new System.Drawing.Size(683, 507);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
@@ -158,5 +170,6 @@ namespace FileReader
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label1;
     }
 }

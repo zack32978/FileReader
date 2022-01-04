@@ -219,7 +219,7 @@ namespace BMPDecoder
                 byte bytevalue_1 = Convert.ToByte((bytevalue & 0x0F));
                 if (count == 0) 
                 {
-                    if (bytevalue_0 == 0 && bytevalue_1 == 0) ;
+                    if (bytevalue_0 == 0 && bytevalue_1 == 0);
                     else if (bytevalue_0 == 0 && bytevalue_1 == 1)
                         break;
                     else if (bytevalue_0 == 0 && bytevalue_1 == 2)

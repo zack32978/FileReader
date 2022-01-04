@@ -55,9 +55,14 @@ namespace FileReader
             this.button12 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button13 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button14 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -65,9 +70,9 @@ namespace FileReader
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(21, 13);
+            this.button1.Location = new System.Drawing.Point(21, 22);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(51, 51);
+            this.button1.Size = new System.Drawing.Size(51, 28);
             this.button1.TabIndex = 0;
             this.button1.Text = "Open";
             this.button1.UseVisualStyleBackColor = true;
@@ -81,9 +86,9 @@ namespace FileReader
             // richTextBox1
             // 
             this.richTextBox1.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.richTextBox1.Location = new System.Drawing.Point(78, 12);
+            this.richTextBox1.Location = new System.Drawing.Point(78, 23);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(271, 51);
+            this.richTextBox1.Size = new System.Drawing.Size(184, 27);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -93,7 +98,7 @@ namespace FileReader
             this.richTextBox2.Font = new System.Drawing.Font("新細明體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.richTextBox2.Location = new System.Drawing.Point(389, 116);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(153, 272);
+            this.richTextBox2.Size = new System.Drawing.Size(129, 272);
             this.richTextBox2.TabIndex = 5;
             this.richTextBox2.Text = "";
             this.richTextBox2.TextChanged += new System.EventHandler(this.richTextBox2_TextChanged);
@@ -123,7 +128,7 @@ namespace FileReader
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(859, 12);
+            this.button2.Location = new System.Drawing.Point(832, 13);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(71, 51);
             this.button2.TabIndex = 12;
@@ -133,7 +138,7 @@ namespace FileReader
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(1040, 41);
+            this.textBox1.Location = new System.Drawing.Point(996, 41);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(66, 22);
             this.textBox1.TabIndex = 13;
@@ -141,7 +146,7 @@ namespace FileReader
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(1040, 13);
+            this.textBox2.Location = new System.Drawing.Point(996, 13);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(66, 22);
             this.textBox2.TabIndex = 14;
@@ -151,7 +156,7 @@ namespace FileReader
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(953, 13);
+            this.label3.Location = new System.Drawing.Point(909, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 21);
             this.label3.TabIndex = 15;
@@ -161,7 +166,7 @@ namespace FileReader
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("新細明體", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(953, 42);
+            this.label4.Location = new System.Drawing.Point(909, 42);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(81, 21);
             this.label4.TabIndex = 16;
@@ -169,9 +174,9 @@ namespace FileReader
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(355, 12);
+            this.button3.Location = new System.Drawing.Point(287, 12);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(63, 27);
+            this.button3.Size = new System.Drawing.Size(53, 27);
             this.button3.TabIndex = 17;
             this.button3.Text = "RGB";
             this.button3.UseVisualStyleBackColor = true;
@@ -179,9 +184,9 @@ namespace FileReader
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(413, 12);
+            this.button4.Location = new System.Drawing.Point(337, 12);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(63, 27);
+            this.button4.Size = new System.Drawing.Size(53, 27);
             this.button4.TabIndex = 18;
             this.button4.Text = "HSI";
             this.button4.UseVisualStyleBackColor = true;
@@ -189,7 +194,7 @@ namespace FileReader
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(780, 12);
+            this.button5.Location = new System.Drawing.Point(753, 13);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(73, 51);
             this.button5.TabIndex = 19;
@@ -199,9 +204,9 @@ namespace FileReader
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(355, 36);
+            this.button6.Location = new System.Drawing.Point(287, 36);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(63, 27);
+            this.button6.Size = new System.Drawing.Size(53, 27);
             this.button6.TabIndex = 20;
             this.button6.Text = "Rotate";
             this.button6.UseVisualStyleBackColor = true;
@@ -209,9 +214,9 @@ namespace FileReader
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(469, 12);
+            this.button7.Location = new System.Drawing.Point(389, 36);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(63, 27);
+            this.button7.Size = new System.Drawing.Size(53, 27);
             this.button7.TabIndex = 21;
             this.button7.Text = "GrayLevel";
             this.button7.UseVisualStyleBackColor = true;
@@ -219,9 +224,9 @@ namespace FileReader
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(413, 36);
+            this.button8.Location = new System.Drawing.Point(337, 36);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(63, 27);
+            this.button8.Size = new System.Drawing.Size(53, 27);
             this.button8.TabIndex = 22;
             this.button8.Text = "Overlap";
             this.button8.UseVisualStyleBackColor = true;
@@ -250,9 +255,9 @@ namespace FileReader
             // 
             // Histogram
             // 
-            this.Histogram.Location = new System.Drawing.Point(469, 36);
+            this.Histogram.Location = new System.Drawing.Point(540, 12);
             this.Histogram.Name = "Histogram";
-            this.Histogram.Size = new System.Drawing.Size(63, 27);
+            this.Histogram.Size = new System.Drawing.Size(53, 27);
             this.Histogram.TabIndex = 26;
             this.Histogram.Text = "Histogram";
             this.Histogram.UseVisualStyleBackColor = true;
@@ -260,9 +265,9 @@ namespace FileReader
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(589, 12);
+            this.button9.Location = new System.Drawing.Point(490, 12);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(63, 27);
+            this.button9.Size = new System.Drawing.Size(53, 27);
             this.button9.TabIndex = 27;
             this.button9.Text = "Negative";
             this.button9.UseVisualStyleBackColor = true;
@@ -270,9 +275,9 @@ namespace FileReader
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(650, 12);
+            this.button10.Location = new System.Drawing.Point(490, 36);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(63, 27);
+            this.button10.Size = new System.Drawing.Size(53, 27);
             this.button10.TabIndex = 28;
             this.button10.Text = "Binarization";
             this.button10.UseVisualStyleBackColor = true;
@@ -280,9 +285,9 @@ namespace FileReader
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(589, 36);
+            this.button11.Location = new System.Drawing.Point(540, 36);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(63, 27);
+            this.button11.Size = new System.Drawing.Size(53, 27);
             this.button11.TabIndex = 29;
             this.button11.Text = "Slicing";
             this.button11.UseVisualStyleBackColor = true;
@@ -290,9 +295,9 @@ namespace FileReader
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(529, 36);
+            this.button12.Location = new System.Drawing.Point(442, 36);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(63, 27);
+            this.button12.Size = new System.Drawing.Size(53, 27);
             this.button12.TabIndex = 30;
             this.button12.Text = "Contrast";
             this.button12.UseVisualStyleBackColor = true;
@@ -304,7 +309,7 @@ namespace FileReader
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.GridColor = System.Drawing.SystemColors.Menu;
-            this.dataGridView1.Location = new System.Drawing.Point(548, 133);
+            this.dataGridView1.Location = new System.Drawing.Point(540, 133);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(195, 195);
             this.dataGridView1.TabIndex = 31;
@@ -312,17 +317,67 @@ namespace FileReader
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(529, 12);
+            this.button13.Location = new System.Drawing.Point(442, 12);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(63, 27);
+            this.button13.Size = new System.Drawing.Size(53, 27);
             this.button13.TabIndex = 32;
             this.button13.Text = "Brightness";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
+            // button14
+            // 
+            this.button14.Location = new System.Drawing.Point(590, 12);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(53, 27);
+            this.button14.TabIndex = 33;
+            this.button14.Text = "Filter";
+            this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(389, 12);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(53, 27);
+            this.button15.TabIndex = 34;
+            this.button15.Text = "Cut";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(590, 36);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(53, 27);
+            this.button16.TabIndex = 35;
+            this.button16.Text = "Connect";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(640, 12);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(53, 27);
+            this.button17.TabIndex = 36;
+            this.button17.Text = "Ball";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(21, 57);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(53, 27);
+            this.button18.TabIndex = 37;
+            this.button18.Text = "Mpeg";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
             // pictureBox5
             // 
-            this.pictureBox5.Location = new System.Drawing.Point(780, 133);
+            this.pictureBox5.Location = new System.Drawing.Point(753, 116);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(326, 255);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -334,10 +389,10 @@ namespace FileReader
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.Control;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(21, 133);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 132);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(328, 255);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.Size = new System.Drawing.Size(256, 256);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -345,21 +400,26 @@ namespace FileReader
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.Move += new System.EventHandler(this.pictureBox1_Move);
             // 
-            // button14
+            // button19
             // 
-            this.button14.Location = new System.Drawing.Point(650, 36);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(63, 27);
-            this.button14.TabIndex = 33;
-            this.button14.Text = "Filter";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.button19.Location = new System.Drawing.Point(640, 36);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(53, 27);
+            this.button19.TabIndex = 38;
+            this.button19.Text = "Huffman";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1257, 502);
+            this.ClientSize = new System.Drawing.Size(1257, 459);
+            this.Controls.Add(this.button19);
+            this.Controls.Add(this.button18);
+            this.Controls.Add(this.button17);
+            this.Controls.Add(this.button16);
+            this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
             this.Controls.Add(this.button13);
             this.Controls.Add(this.dataGridView1);
@@ -431,6 +491,11 @@ namespace FileReader
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
     }
 }
 

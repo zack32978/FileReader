@@ -113,6 +113,28 @@ namespace FileReader
 
             }
         }
+        //=================================SNR======================================
+        public double SNR(Bitmap imagemg, Bitmap noiseimage)
+        {
+            int r1, r2, g1, g2, b1, b2;
+            double sigma = 0, square = 0;
+
+            for (int y = 0; y < imagemg.Height; y++)
+            {
+                for (int x = 0; x < imagemg.Width; x++)
+                {
+                    r1 = (int)imagemg.GetPixel(x, y).R;
+                    g1 = (int)imagemg.GetPixel(x, y).G;
+                    b1 = (int)imagemg.GetPixel(x, y).B;
+                    r2 = (int)noiseimage.GetPixel(x, y).R;
+                    g2 = (int)noiseimage.GetPixel(x, y).R;
+                    b2 = (int)noiseimage.GetPixel(x, y).R;
+                    sigma += (b1 - b2) * (b1 - b2) + (g1 - g2) * (g1 - g2) + (r1 - r2) * (r1 - r2);
+                    square += b1 * b1 + g1 * g1 + r1 * r1;
+                }
+            }
+            return 10 * Math.Log10(square / sigma);
+        }
         //=================================縮放=====================================
         private void button2_Click(object sender, EventArgs e)
         {
@@ -124,7 +146,7 @@ namespace FileReader
                 double Height = Math.Round(Hzoom * (double)PCX_decode.decode_image.Height);
                 Bitmap zoomimage = new Bitmap((int)Width, (int)Height);
                 if (Wzoom == 1 && Hzoom == 1 && Wzoom != 0 && Hzoom != 0)
-                    pictureBox5.Image = PCX_decode.decode_image;
+                { pictureBox5.Image = PCX_decode.decode_image; }
                 else
                 {
                     for (int y = 0; y < Height; y++)
@@ -145,6 +167,7 @@ namespace FileReader
                         }
                     }
                     pictureBox5.Image = zoomimage;
+                    
                 }
             }
             else if (filename.Contains(".bmp"))
@@ -153,7 +176,7 @@ namespace FileReader
                 double Height = Math.Round(Hzoom * (double)BMP_decode.decode_image.Height);
                 Bitmap zoomimage = new Bitmap((int)Width, (int)Height);
                 if (Wzoom == 1 && Hzoom == 1 && Wzoom != 0 && Hzoom != 0)
-                    pictureBox5.Image = BMP_decode.decode_image;
+                { pictureBox5.Image = BMP_decode.decode_image; }
                 else
                 {
                     for (int y = 0; y < Height; y++)
@@ -174,6 +197,7 @@ namespace FileReader
                         }
                     }
                     pictureBox5.Image = zoomimage;
+                    
                 }
             }
         }
@@ -278,6 +302,7 @@ namespace FileReader
                     }
                 }
                 pictureBox5.Image = zoomimage;
+                
             }
             
         }
@@ -481,8 +506,6 @@ namespace FileReader
                 RGB_form.Show();
             }
         }
-        
-        
         //=============================旋轉=========================================
         private void button6_Click(object sender, EventArgs e)
         {
@@ -491,6 +514,15 @@ namespace FileReader
             else { image = BMP_decode.decode_image; }
             Rotate rotate = new Rotate(image);
             rotate.Show();
+        }
+        //=============================Cut==========================================
+        private void button15_Click(object sender, EventArgs e)
+        {
+            Bitmap image;
+            if (filename.Contains(".pcx")) { image = PCX_decode.decode_image; }
+            else { image = BMP_decode.decode_image; }
+            Cut c = new Cut(image);
+            c.Show();
         }
         //=============================灰階=========================================
         public Bitmap image2Graylevel(Bitmap image) 
@@ -601,7 +633,6 @@ namespace FileReader
             
         }
         //========================histogram=========================================
-        
         private void Histogram_Click(object sender, EventArgs e)
         {
             Bitmap image;
@@ -690,6 +721,24 @@ namespace FileReader
             Filter f = new Filter(image);
             f.Show();
         }
+        //=========================Connected component========================
+        private void button16_Click(object sender, EventArgs e)
+        {
+            Bitmap image;
+            if (filename.Contains(".pcx")) { image = PCX_decode.decode_image; }
+            else { image = BMP_decode.decode_image; }
+            Connected cc = new Connected(image2Graylevel(image));
+            cc.Show();
+        }
+        //=========================ball========================
+        private void button17_Click(object sender, EventArgs e)
+        {
+            Bitmap image;
+            if (filename.Contains(".pcx")) { image = PCX_decode.decode_image; }
+            else { image = BMP_decode.decode_image; }
+            BouncingBalls b = new BouncingBalls(image);
+            b.Show();
+        }
         //==========================================================================
         private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
         {
@@ -752,8 +801,21 @@ namespace FileReader
         {
 
         }
-
-        
+        //================================Mpeg============================
+        private void button18_Click(object sender, EventArgs e)
+        {
+            Mpeg m = new Mpeg();
+            m.Show();
+        }
+        //=======================Huffman============================
+        private void button19_Click(object sender, EventArgs e)
+        {
+            Bitmap image;
+            if (filename.Contains(".pcx")) { image = PCX_decode.decode_image; }
+            else { image = BMP_decode.decode_image; }
+            Huffman h = new Huffman(image2Graylevel(image));
+            h.Show();
+        }
     }
 
 }
